@@ -333,7 +333,8 @@ void process_command() {
 		break;
 		
 		case ZERO:
-		switch(User_command->command_color) {
+			
+			switch(User_command->command_color) {
 			case ALL:
 			Red_Counter = 0;
 			Yellow_counter = 0;
@@ -352,6 +353,7 @@ void process_command() {
 			Green_Counter = 0;
 			break;
 		}
+		break;
 		
 		case TOGGLE:
 		switch(User_command->command_color) {
@@ -359,7 +361,7 @@ void process_command() {
 			Red_Frequency = Target_ms_Blink;
 			Yellow_Frequency = Target_ms_Blink / 100;
 			
-			Green_Frequency = Target_ms_Blink / 1000;
+			Green_Frequency = Target_ms_Blink;
 			
 			float tempFreq = Target_ms_Blink / 1000;
 			
@@ -367,7 +369,7 @@ void process_command() {
 			// Ms is in KHZ, so 19.5 KHZ - .0003KHZ to miliseconds = 1 ms - 3000 ms means we are good to use this prescaler.
 			// We can't input anything less than 1 ms into the system, and the fastest we can blink at is 19.5 KHZ, or roughly .05 ms. We can't blink any slower than once every 3 seconds.
 			// 20,000,000/1024 = 19531
-			ICR1 = 19531 * tempFreq;
+			ICR1 = 19531 * Green_Frequency / 1000;
 			
 			// We want to toggle half way to the top
 			OCR1A = ICR1/2;
@@ -382,10 +384,8 @@ void process_command() {
 			break;
 			
 			case GREEN:
-			tempFreq = Target_ms_Blink / 1000;
-			float tempICR1 = (float)19531 * tempFreq;
-			printf ("%i",tempICR1);
-			ICR1 = (float)19531 * tempFreq;
+			Green_Frequency = Target_ms_Blink;
+			ICR1 = 19531 * Green_Frequency / 1000;
 			// We want to toggle half way to the top
 			OCR1A = ICR1/2;
 			
