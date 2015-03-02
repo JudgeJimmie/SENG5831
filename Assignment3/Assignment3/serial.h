@@ -35,14 +35,14 @@ void serial_wait_for_sending_to_finish()
 
 // process_received_byte: Responds to a byte that has been received on
 // USB_COMM.  
-void serial_process_received_byte(char byte);
+void processBytes(char byte);
 
 void serial_check_for_new_bytes_received()
 {
 	while(serial_get_received_bytes(USB_COMM) != receive_buffer_position)
 	{
 		// Process the new byte that has just been received.
-		serial_process_received_byte(receive_buffer[receive_buffer_position]);
+		processByte(receive_buffer[receive_buffer_position]);
 
 		// Increment receive_buffer_position, but wrap around when it gets to
 		// the end of the buffer.
